@@ -1,9 +1,5 @@
-# Zumo32U4 library
-
-Version: 1.1.4<br/>
-Release date: 2017-07-17<br/>
-[![Build Status](https://travis-ci.org/pololu/zumo-32u4-arduino-library.svg?branch=master)](https://travis-ci.org/pololu/zumo-32u4-arduino-library)<br/>
-[www.pololu.com](http://www.pololu.com/)
+  <h1 style="color: red;">WARNING: ALL CODES MUST BE IN MAIN.ino FILE FOR EXECTUTION.</h1>
+# Zumo32U4
 
 ## Summary
 
