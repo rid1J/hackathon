@@ -1,5 +1,5 @@
 /*
- *@Aauthor Ridwaan.M.Jawaheer
+ *@Author Ridwaan.M.Jawaheer
  *@Description: Hackathon challenge.
  *@Contributor: Mehfouz.M.Foyjoo
  *@Note: PLEASE MODIFY COMMENT ACCORDINGLY WHEN MODIFYING VARIABLE VALUES.
