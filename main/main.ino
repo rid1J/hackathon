@@ -1,3 +1,10 @@
+/*
+ *@Aauthor Ridwaan.M.Jawaheer
+ *@Description: Hackathon challenge.
+ *@Contributor: Mehfouz.M.Foyjoo
+ *@Note: PLEASE MODIFY COMMENT ACCORDINGLY WHEN MODIFYING VARIABLE VALUES.
+*/
+
 #include <Wire.h>
 #include <Zumo32U4.h>
 
@@ -8,69 +15,59 @@ Zumo32U4ButtonC btnC;
 Zumo32U4LCD lcd;
 Zumo32U4Motors motors;
 
-const int maxSpeed = 400;
+const int maxSpeed = 400; // Actual speed: 25cm/s
 
-int speed = 50;
-long velocity = (0.0625 * speed);
-double rotation  = 0.0;
-long distance = 21;
+/*MOVEMENT VARIABLE BEGIN*/
+int speed = 50; // Actual speed: 3.125cm/s
+long coveredDistance = (0.0625 * speed);
+long finalDistance = 21; // Actual distance: 21cm
+/*MOVEMENT VARIABLE END*/
 
-int rotationTime = 5000;
+/*MOVEMENT VARIABLE BEGIN*/
+int rotationTime = 5000; // Actual time: 5s
+/*MOVEMENT VARIABLE END*/
 
 // Movement
-void displace(String modifier) {
-    if(modifier == "foward") {
-      if(distance > 0 && speed <= maxSpeed) {
-        while(distance > 0) {
-          lcd.print(distance);
-          distance = (distance - velocity);
+void move(String modifier) {
+  if(finalDistance > 0 && speed <= maxSpeed) {
+      while(finalDistance > 0) {
+        finalDistance = (finalDistance - coveredDistance); // Subtract covered distance per second from final distance 
+        if(modifier == "foward") {  
           motors.setSpeeds(speed, speed);
-          delay(1000);
         }
-        if(distance <= 0) {
-          motors.setSpeeds(0, 0);
-        }
-      }
-    }
-    if(modifier == "backward") {
-      if(distance > 0 && speed <= maxSpeed) {
-      while(distance > 0) {
-          lcd.print(distance);
-          distance = (distance - velocity);
+        if(modifier == "backward") {
           motors.setSpeeds(-speed, -speed);
-          delay(1000);
         }
-        if(distance <= 0) {
-          motors.setSpeeds(0, 0);
-        }
+        delay(1000);
+      }
+      if(finalDistance <= 0) {
+        motors.setSpeeds(0, 0);
       }
     }
+  }
 }
 
 // Rotation
 void rotate(String mod) {
     if(mod == "clockwise") {
-      motors.setSpeeds(0, speed);
-      delay(rotationTime);
-      motors.setSpeeds(0, 0);
+      motors.setSpeeds(speed, 0);
     }
     if(mod == "anticlockwise") {
-        motors.setSpeeds(0, speed);
-        delay(rotationTime);
-        motors.setSpeeds(0, 0);
+      motors.setSpeeds(0, speed);
     }
+    delay(rotationTime);
+    motors.setSpeeds(0, 0);
 }
 
 void setup() {
   lcd.clear();
-  btnA.waitForButton();
 }
 
 void loop() {
   if(btnA.isPressed()) {
-    displace("backward");
+    move("backward");
     distance = 21;
     rotate("anticlockwise");
-    displace("foward");
+    move("foward");
   }
 }
