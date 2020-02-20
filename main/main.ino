@@ -19,7 +19,7 @@ const int maxSpeed = 400; // Actual speed: 25cm/s
 
 /*MOVEMENT VARIABLE BEGIN*/
 int speed = 50; // Actual speed: 3.125cm/s
-long coveredDistance = (0.0625 * speed);
+long coveredDistance = (0.0625 * speed); // Distance moved in 1s
 long finalDistance = 21; // Actual distance: 21cm
 /*MOVEMENT VARIABLE END*/
 
@@ -66,7 +66,7 @@ void setup() {
 void loop() {
   if(btnA.isPressed()) {
     move("backward");
-    distance = 21;
+    finalDistance = 21;
     rotate("anticlockwise");
     move("foward");
   }
