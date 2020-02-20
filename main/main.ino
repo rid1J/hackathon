@@ -6,55 +6,71 @@ Zumo32U4ButtonA btnA;
 Zumo32U4ButtonB btnB;
 Zumo32U4ButtonC btnC;
 Zumo32U4LCD lcd;
+Zumo32U4Motors motors;
 
-// Calculate battery life
-long readVcc() {
-  long result;
-  // Read 1.1V reference against AVcc
-  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-  delay(2); // Wait for Vref to settle
-  ADCSRA |= _BV(ADSC); // Convert
-  while (bit_is_set(ADCSRA,ADSC));
-  result = ADCL;
-  result |= ADCH<<8;
-  result = 1126400L / result; // Back-calculate AVcc in mV
-  return (60000 - result) / 1000 * 100;
+const int maxSpeed = 400;
+
+int speed = 50;
+long velocity = (0.0625 * speed);
+double rotation  = 0.0;
+long distance = 21;
+
+int rotationTime = 5000;
+
+// Movement
+void displace(String modifier) {
+    if(modifier == "foward") {
+      if(distance > 0 && speed <= maxSpeed) {
+        while(distance > 0) {
+          lcd.print(distance);
+          distance = (distance - velocity);
+          motors.setSpeeds(speed, speed);
+          delay(1000);
+        }
+        if(distance <= 0) {
+          motors.setSpeeds(0, 0);
+        }
+      }
+    }
+    if(modifier == "backward") {
+      if(distance > 0 && speed <= maxSpeed) {
+      while(distance > 0) {
+          lcd.print(distance);
+          distance = (distance - velocity);
+          motors.setSpeeds(-speed, -speed);
+          delay(1000);
+        }
+        if(distance <= 0) {
+          motors.setSpeeds(0, 0);
+        }
+      }
+    }
 }
 
-void startChallengeOne() {
-  // Draw Accenture logo
-  
-}
-
-void startChallengeTwo() {
-  // Follow path
-
-}
-
-void startChallengeThree() {
-  // Complete race track
-
+// Rotation
+void rotate(String mod) {
+    if(mod == "clockwise") {
+      motors.setSpeeds(0, speed);
+      delay(rotationTime);
+      motors.setSpeeds(0, 0);
+    }
+    if(mod == "anticlockwise") {
+        motors.setSpeeds(0, speed);
+        delay(rotationTime);
+        motors.setSpeeds(0, 0);
+    }
 }
 
 void setup() {
-
+  lcd.clear();
+  btnA.waitForButton();
 }
 
 void loop() {
-
-  lcd.clear();
-  lcd.println( readVcc(), DEC );
-  delay(1000);
-
   if(btnA.isPressed()) {
-    startChallengeOne();
-  }
-
-  if(btnB.isPressed()) {
-    startChallengeTwo();
-  }
-
-  if(btnC.isPressed()) {
-    startChallengeThree();
+    displace("backward");
+    distance = 21;
+    rotate("anticlockwise");
+    displace("foward");
   }
 }
