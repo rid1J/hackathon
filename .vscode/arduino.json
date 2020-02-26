@@ -1,5 +1,6 @@
 {
     "board": "pololu-a-star:avr:a-star32U4",
     "port": "COM3",
-    "programmer": "Arduino as ISP"
+    "programmer": "Arduino as ISP",
+    "sketch": "main\\main.ino"
 }
